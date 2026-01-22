@@ -1,0 +1,57 @@
+name: Lottery Automation
+
+on:
+  schedule:
+    # Lucky Number — 08:00 IST
+    - cron: "30 2 * * *"
+
+    # Singapore — 12:31, 16:31, 20:30 IST
+    - cron: "1 7 * * *"
+    - cron: "1 11 * * *"
+    - cron: "0 15 * * *"
+
+    # Dear — 13:01, 18:01, 20:01 IST
+    - cron: "31 7 * * *"
+    - cron: "31 12 * * *"
+    - cron: "31 14 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ---------- Lucky Number ----------
+      - name: Run Lucky Number
+        if: github.event.schedule == '30 2 * * *'
+        run: python script_lucky.py
+
+      # ---------- Singapore ----------
+      - name: Run Singapore
+        if: |
+          github.event.schedule == '1 7 * * *' ||
+          github.event.schedule == '1 11 * * *' ||
+          github.event.schedule == '0 15 * * *'
+        run: python script_singapore.py
+
+      # ---------- Dear ----------
+      - name: Run Dear
+        if: |
+          github.event.schedule == '31 7 * * *' ||
+          github.event.schedule == '31 12 * * *' ||
+          github.event.schedule == '31 14 * * *'
+        run: python script_dear.py
