@@ -37,12 +37,13 @@ jobs:
 
       # ---------- Lucky Number ----------
       - name: Run Lucky Number
-        if: github.event.schedule == '30 2 * * *'
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 2 * * *'
         run: python lucky_number_updater.py
 
       # ---------- Singapore ----------
       - name: Run Singapore
         if: |
+          github.event_name == 'workflow_dispatch' ||
           github.event.schedule == '1 7 * * *' ||
           github.event.schedule == '1 11 * * *' ||
           github.event.schedule == '0 15 * * *'
@@ -51,6 +52,7 @@ jobs:
       # ---------- Dear ----------
       - name: Run Dear
         if: |
+          github.event_name == 'workflow_dispatch' ||
           github.event.schedule == '31 7 * * *' ||
           github.event.schedule == '31 12 * * *' ||
           github.event.schedule == '31 14 * * *'
