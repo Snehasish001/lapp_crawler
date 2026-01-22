@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+easyocr
+pillow
+opencv-python-headless
+PyMuPDF
+urllib3
