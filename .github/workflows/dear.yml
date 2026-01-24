@@ -1,0 +1,32 @@
+name: Dear Lottery Automation
+
+on:
+  schedule:
+    # Dear — 13:01, 18:01, 20:01 IST
+    - cron: "31 7 * * *"
+    - cron: "31 12 * * *"
+    - cron: "31 14 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  run-dear:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements_dear.txt
+
+      - name: Run Dear Crawler
+        run: python dear_crawler.py

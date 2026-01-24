@@ -1,0 +1,30 @@
+name: Lucky Number Automation
+
+on:
+  schedule:
+    # Lucky Number — 08:00 IST (02:30 UTC)
+    - cron: "30 2 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  run-lucky:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements_lucky.txt
+
+      - name: Run Lucky Number
+        run: python lucky_number_updater.py
